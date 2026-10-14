@@ -3,7 +3,7 @@ on:
   push:
     paths: ['.github/workflows/languages.yml']
   schedule:
-    - cron: '17 12 * * *'
+    - cron: '17 0,12 * * *'
   workflow_dispatch:
 permissions:
   contents: write
@@ -59,7 +59,7 @@ jobs:
           pathlib.Path('assets').mkdir(exist_ok=True)
           pathlib.Path('assets/languages.svg').write_text(''.join(parts))
           if not pathlib.Path('README.md').exists():
-              pathlib.Path('README.md').write_text("# Kenyon Melton\n\nI’m Kenyon Melton, a developer and cybersecurity student at Franklin University. Explore my software projects, client work, hardware builds, and home lab.\n\n## Project languages\n\n![Language breakdown across my public original repositories](assets/languages.svg)\n\n<sub>Based on code bytes reported by GitHub across my public original repositories. Excludes forks and this profile repository. Updated daily. Percentages describe project composition, not proficiency.</sub>\n")
+              pathlib.Path('README.md').write_text("# Kenyon Melton\n\nI’m Kenyon Melton, a developer and cybersecurity student at Franklin University. Explore my software projects, client work, hardware builds, and home lab.\n\n## Project languages\n\n![Language breakdown across my public original repositories](assets/languages.svg)\n\n<sub>Based on code bytes reported by GitHub across my public original repositories. Excludes forks and this profile repository. Updated every 12 hours. Percentages describe project composition, not proficiency.</sub>\n")
           PY
       - name: Save updated profile
         run: |
