@@ -1,0 +1,71 @@
+name: Update project languages
+on:
+  push:
+    paths: ['.github/workflows/languages.yml']
+  schedule:
+    - cron: '17 12 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  languages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate profile and language bar
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 <<'PY'
+          import collections, html, json, os, pathlib, urllib.request
+          def get(path):
+              req = urllib.request.Request('https://api.github.com' + path, headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Accept': 'application/vnd.github+json', 'User-Agent': 'profile-languages'})
+              with urllib.request.urlopen(req) as response:
+                  return json.load(response)
+          totals = collections.Counter()
+          count = 0
+          for page in range(1, 100):
+              repos = get(f'/users/WallfacerX/repos?type=owner&per_page=100&page={page}')
+              if not repos:
+                  break
+              for repo in repos:
+                  if repo['fork'] or repo['private'] or repo['name'].lower() == 'wallfacerx':
+                      continue
+                  langs = get('/repos/' + repo['full_name'] + '/languages')
+                  totals.update(langs)
+                  count += bool(langs)
+          if not totals:
+              raise RuntimeError('No language data found; preserving previous chart')
+          items = totals.most_common()
+          total = sum(totals.values())
+          colors = {'JavaScript':'#f1e05a', 'TypeScript':'#3178c6', 'Python':'#3572A5', 'HTML':'#e34c26', 'CSS':'#663399', 'C++':'#f34b7d', 'C':'#555555', 'Shell':'#89e051', 'PowerShell':'#012456', 'Java':'#b07219', 'CMake':'#DA3434', 'Swift':'#F05138', 'Rust':'#dea584'}
+          palette = ['#58a6ff','#d2a8ff','#ffa657','#7ee787','#ff7b72','#79c0ff']
+          height = 76 + ((len(items)+2)//3)*28
+          parts = [f'<svg xmlns="http://www.w3.org/2000/svg" width="840" height="{height}" viewBox="0 0 840 {height}" role="img" aria-labelledby="title desc">', '<title id="title">Project languages</title>', f'<desc id="desc">Code volume across {count} public original repositories</desc>', '<style>text{font-family:Arial,sans-serif;fill:#1f2328}@media(prefers-color-scheme:dark){text{fill:#e6edf3}}</style>', '<text x="0" y="23" font-size="20" font-weight="600">Languages</text>', '<defs><clipPath id="bar"><rect x="0" y="40" width="840" height="12" rx="6"/></clipPath></defs>', '<g clip-path="url(#bar)">']
+          x = 0
+          for i,(lang,value) in enumerate(items):
+              width = value / total * 840
+              color = colors.get(lang,palette[i % len(palette)])
+              parts.append(f'<rect x="{x:.4f}" y="40" width="{width:.4f}" height="12" fill="{color}"/>')
+              x += width
+          parts.append('</g>')
+          for i,(lang,value) in enumerate(items):
+              x,y = (i%3)*280, 82+(i//3)*28
+              color = colors.get(lang,palette[i % len(palette)])
+              pct = value / total * 100
+              label = f'{pct:.1f}%' if pct >= 0.1 else '&lt;0.1%'
+              parts.append(f'<circle cx="{x+6}" cy="{y-5}" r="5" fill="{color}"/><text x="{x+20}" y="{y}" font-size="14">{html.escape(lang)} {label}</text>')
+          parts.append('</svg>')
+          pathlib.Path('assets').mkdir(exist_ok=True)
+          pathlib.Path('assets/languages.svg').write_text(''.join(parts))
+          pathlib.Path('README.md').write_text("# Kenyon Melton\n\nI’m Kenyon Melton, a developer and cybersecurity student at Franklin University. Explore my software projects, client work, hardware builds, and home lab.\n\n## Project languages\n\n![Language breakdown across my public original repositories](assets/languages.svg)\n\n<sub>Based on code bytes reported by GitHub across my public original repositories. Excludes forks and this profile repository. Updated daily. Percentages describe project composition, not proficiency.</sub>\n")
+          PY
+      - name: Save updated profile
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md assets/languages.svg
+          if ! git diff --cached --quiet; then
+            git commit -m 'Update profile language breakdown'
+            git push
+          fi
