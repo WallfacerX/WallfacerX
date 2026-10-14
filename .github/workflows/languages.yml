@@ -17,7 +17,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           python3 <<'PY'
-          import collections, datetime, html, json, os, pathlib, urllib.request
+          import collections, html, json, os, pathlib, urllib.request
           def get(path):
               req = urllib.request.Request('https://api.github.com' + path, headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Accept': 'application/vnd.github+json', 'User-Agent': 'profile-languages'})
               with urllib.request.urlopen(req) as response:
@@ -38,11 +38,10 @@ jobs:
               raise RuntimeError('No language data found; preserving previous chart')
           items = totals.most_common()
           total = sum(totals.values())
-          size_label = f'{total / 1_000_000:.2f} MB' if total >= 1_000_000 else f'{total / 1_000:.1f} KB'
           colors = {'JavaScript':'#f1e05a', 'TypeScript':'#3178c6', 'Python':'#3572A5', 'HTML':'#e34c26', 'CSS':'#663399', 'C++':'#f34b7d', 'C':'#555555', 'Shell':'#89e051', 'PowerShell':'#012456', 'Java':'#b07219', 'CMake':'#DA3434', 'Swift':'#F05138', 'Rust':'#dea584'}
           palette = ['#58a6ff','#d2a8ff','#ffa657','#7ee787','#ff7b72','#79c0ff']
           height = 76 + ((len(items)+2)//3)*28
-          parts = [f'<svg xmlns="http://www.w3.org/2000/svg" width="840" height="{height}" viewBox="0 0 840 {height}" role="img" aria-labelledby="title desc">', '<title id="title">Project languages</title>', f'<desc id="desc">Code volume across {count} public original repositories</desc>', '<style>text{font-family:Arial,sans-serif;fill:#1f2328}@media(prefers-color-scheme:dark){text{fill:#e6edf3}}</style>', f'<text x="0" y="23" font-size="20" font-weight="600">{size_label} of code</text><text x="840" y="23" text-anchor="end" font-size="14">{count} projects</text>', '<defs><clipPath id="bar"><rect x="0" y="40" width="840" height="12" rx="6"/></clipPath></defs>', '<g clip-path="url(#bar)">']
+          parts = [f'<svg xmlns="http://www.w3.org/2000/svg" width="840" height="{height}" viewBox="0 0 840 {height}" role="img" aria-labelledby="title desc">', '<title id="title">Project languages</title>', f'<desc id="desc">Code volume across {count} public original repositories</desc>', '<style>text{font-family:Arial,sans-serif;fill:#1f2328}@media(prefers-color-scheme:dark){text{fill:#e6edf3}}</style>', '<text x="0" y="23" font-size="20" font-weight="600">Languages</text>', '<defs><clipPath id="bar"><rect x="0" y="40" width="840" height="12" rx="6"/></clipPath></defs>', '<g clip-path="url(#bar)">']
           x = 0
           for i,(lang,value) in enumerate(items):
               width = value / total * 840
