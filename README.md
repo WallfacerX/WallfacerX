@@ -6,7 +6,7 @@ I’m Kenyon Melton, a developer and cybersecurity student at Franklin Universit
 
 ![Language breakdown across my public original repositories](assets/languages.svg)
 
-<sub>Based on code bytes reported by GitHub across my public original repositories. Excludes forks and this profile repository. Updated daily. Percentages describe project composition, not proficiency.</sub>
+<sub>Based on code bytes reported by GitHub across my public original repositories. Excludes forks and this profile repository. Updated every 12 hours. Percentages describe project composition, not proficiency.</sub>
 
 
 ## Tech stack
