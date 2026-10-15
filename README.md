@@ -1,6 +1,6 @@
 # Kenyon Melton
 
-I’m Kenyon Melton, a developer and cybersecurity student at Franklin University. Explore my software projects, client work, hardware builds, and home lab.
+I’m Kenyon Melton, a developer and cybersecurity student at Franklin University. Explore my software projects, client work, hardware builds, and home lab. I have pinned current projects that please leave a star if you like them! Thanks!
 
 ## Project languages
 
