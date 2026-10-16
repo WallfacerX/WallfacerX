@@ -103,8 +103,8 @@ def contribution_svg(days, animated=True):
     route = sorted(cells, key=lambda c:(c[0], c[1] if c[0]%2 == 0 else -c[1]))
     arrivals = {d['date']: i for i, (_, _, d) in enumerate(route)}
     total = sum(d['contributionCount'] for d in days)
-    p = svg_start(1000, 238, 'Contribution arcade | WallfacerX', f'{total} real contributions from {days[0]["date"]} to {days[-1]["date"]}. A Pac-Man-style character eats active day squares. This is a separate visualization of GitHub data.')
-    css = ['text{font-family:monospace}', '.player{display:none}']
+    p = svg_start(1000, 238, 'Contribution arcade | WallfacerX', f'{total} real contributions from {days[0]["date"]} to {days[-1]["date"]}. A yellow Pac-Man-style character turns active day squares violet. A white ghost starts halfway through and catches him at the final square. This is a separate visualization of GitHub data.')
+    css = ['text{font-family:monospace}', '.player,.ghost{display:none}']
     duration = 65
     if animated:
         css += [f'.player{{display:inline;animation:travel {duration}s linear infinite}}', f'.mouth{{animation:chomp .22s steps(2,end) infinite}}', '@keyframes chomp{50%{transform:scaleY(.2)}}']
@@ -114,12 +114,21 @@ def contribution_svg(days, animated=True):
         col,row,_ = route[-1]
         keyframes.append(f'100%{{transform:translate({32+col*18}px,{83+row*18}px)}}')
         css.append('@keyframes travel{'+''.join(keyframes)+'}')
+        # Pac-Man travels during 0–94% of the loop. The ghost starts at
+        # 47% and follows the same route at twice the speed, meeting at 94%.
+        ghost_frames = ['0%,46.999%{opacity:0}']
+        for i, (col, row, _) in enumerate(route):
+            ghost_frames.append(f'{47+i/(len(route)-1)*47:.5f}%{{opacity:1;transform:translate({32+col*18}px,{83+row*18}px)}}')
+        col, row, _ = route[-1]
+        ghost_frames.append(f'100%{{opacity:1;transform:translate({32+col*18}px,{83+row*18}px)}}')
+        css.append(f'.ghost{{display:inline;animation:chase {duration}s linear infinite}}')
+        css.append('@keyframes chase{'+''.join(ghost_frames)+'}')
         for _, _, d in cells:
             if not d['contributionCount']:
                 continue
             t = arrivals[d['date']]/(len(route)-1)*94
             css.append(f'.d{arrivals[d["date"]]}{{animation:e{arrivals[d["date"]]} {duration}s linear infinite}}@keyframes e{arrivals[d["date"]]}{{0%,{max(0,t-.001):.5f}%{{fill:{COLORS[d["level"]]};opacity:1}}{max(.001,t):.5f}%,98%{{fill:#9a6ae8;opacity:1}}100%{{fill:{COLORS[d["level"]]};opacity:1}}}}')
-        css += ['@media(prefers-reduced-motion:reduce){.player{display:none!important}rect{animation:none!important}}']
+        css += ['@media(prefers-reduced-motion:reduce){.player,.ghost{display:none!important}rect{animation:none!important}}']
     p += ['<style>'+''.join(css)+'</style>', '<rect width="1000" height="238" rx="16" fill="#070b14"/>', '<text x="26" y="33" font-size="17" letter-spacing="2" fill="#a88af5">CONTRIBUTION ARCADE</text>', f'<text x="974" y="33" text-anchor="end" font-size="12" fill="#83cbd8">{total:,} contributions · rolling year</text>']
     previous_month = None
     for col, row, d in cells:
@@ -129,6 +138,7 @@ def contribution_svg(days, animated=True):
             previous_month = date.month
         label = f'{d["date"]}: {d["contributionCount"]} contributions'
         p.append(f'<rect class="d{arrivals[d["date"]]}" x="{26+col*18}" y="{77+row*18}" width="12" height="12" rx="3" fill="{COLORS[d["level"]]}"><title>{label}</title></rect>')
+    p.append('<g class="ghost"><path d="M-8 8V-1a8 8 0 0 1 16 0V8L4 5L0 8L-4 5Z" fill="#ffffff" stroke="#b7c5dd" stroke-width=".6"/><ellipse cx="-3" cy="-1" rx="2.5" ry="3" fill="#d9e9ff"/><ellipse cx="3" cy="-1" rx="2.5" ry="3" fill="#d9e9ff"/><circle cx="-2" cy="-1" r="1.25" fill="#273b69"/><circle cx="4" cy="-1" r="1.25" fill="#273b69"/></g>')
     p += ['<g class="player"><circle r="8" fill="#ad83ff" opacity=".25"/><circle r="6.8" fill="#ffdf00"/><path class="mouth" d="M0 0L9 -5L9 5Z" fill="#070b14"/><circle cx="-1" cy="-3.3" r="1" fill="#070b14"/></g>', f'<text x="26" y="221" font-size="11" fill="#8f9bb3">{days[0]["date"]} to {days[-1]["date"]} · GitHub contribution data · refreshed every 12 hours</text>', '</svg>']
     return ''.join(p)
 
