@@ -11,7 +11,7 @@ I’m Kenyon Melton, a developer and cybersecurity student at Franklin Universit
 
 ![Language breakdown across my public original repositories](assets/languages.svg)
 
-<sub>Based on code bytes reported by GitHub across my public original repositories. Excludes forks and this profile repository. Updated every 12 hours. Percentages describe project composition, not proficiency.</sub>
+<sub>Based on code bytes reported by GitHub across my public original repositories. Excludes forks and this profile repository. Updated every 12 hours.</sub>
 
 
 ## Tech stack
@@ -41,4 +41,4 @@ I’m Kenyon Melton, a developer and cybersecurity student at Franklin Universit
   <img src="https://raw.githubusercontent.com/WallfacerX/WallfacerX/main/assets/contribution-arcade.svg?v=white-ghost" alt="Pac-Man-style animation of my real GitHub contribution calendar" width="1000">
 </picture>
 
-<sub>A separate animation of my GitHub contribution data, refreshed every 12 hours. It does not modify GitHub’s native contribution grid. [Static view](assets/contribution-arcade-static.svg) · [Static header](assets/digital-rain-static.svg)</sub>
+<sub>[Static view](assets/contribution-arcade-static.svg) · [Static header](assets/digital-rain-static.svg)</sub>
