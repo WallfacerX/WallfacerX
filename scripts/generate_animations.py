@@ -118,7 +118,7 @@ def contribution_svg(days, animated=True):
             if not d['contributionCount']:
                 continue
             t = arrivals[d['date']]/(len(route)-1)*94
-            css.append(f'.d{arrivals[d["date"]]}{{animation:e{arrivals[d["date"]]} {duration}s linear infinite}}@keyframes e{arrivals[d["date"]]}{{0%,{max(0,t-.001):.5f}%{{opacity:1}}{max(.001,t):.5f}%,98%{{opacity:.09}}100%{{opacity:1}}}}')
+            css.append(f'.d{arrivals[d["date"]]}{{animation:e{arrivals[d["date"]]} {duration}s linear infinite}}@keyframes e{arrivals[d["date"]]}{{0%,{max(0,t-.001):.5f}%{{fill:{COLORS[d["level"]]};opacity:1}}{max(.001,t):.5f}%,98%{{fill:#9a6ae8;opacity:1}}100%{{fill:{COLORS[d["level"]]};opacity:1}}}}')
         css += ['@media(prefers-reduced-motion:reduce){.player{display:none!important}rect{animation:none!important}}']
     p += ['<style>'+''.join(css)+'</style>', '<rect width="1000" height="238" rx="16" fill="#070b14"/>', '<text x="26" y="33" font-size="17" letter-spacing="2" fill="#a88af5">CONTRIBUTION ARCADE</text>', f'<text x="974" y="33" text-anchor="end" font-size="12" fill="#83cbd8">{total:,} contributions · rolling year</text>']
     previous_month = None
