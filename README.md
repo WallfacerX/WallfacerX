@@ -1,3 +1,8 @@
+<picture>
+  <source media="(prefers-reduced-motion: reduce)" srcset="assets/digital-rain-static.svg">
+  <img src="assets/digital-rain.svg" alt="Kenyon Melton · Developer · Cybersecurity Student" width="1000">
+</picture>
+
 # Kenyon Melton
 
 I’m Kenyon Melton, a developer and cybersecurity student at Franklin University. Explore my software projects, client work, hardware builds, and home lab. I have pinned current projects, please leave a star if you like them. Thanks!
@@ -28,3 +33,12 @@ I’m Kenyon Melton, a developer and cybersecurity student at Franklin Universit
 [![pytest](https://img.shields.io/badge/pytest-0A9EDC?style=flat-square&logo=pytest&logoColor=white)](https://github.com/WallfacerX/PromptSieve) [![Ruff](https://img.shields.io/badge/Ruff-5B721E?style=flat-square&logo=ruff&logoColor=white)](https://github.com/WallfacerX/trailsleuth) [![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/WallfacerX/trailsleuth)
 
 <sub>Click a badge to explore a project that uses it.</sub>
+
+## Contribution arcade
+
+<picture>
+  <source media="(prefers-reduced-motion: reduce)" srcset="assets/contribution-arcade-static.svg">
+  <img src="assets/contribution-arcade.svg" alt="Pac-Man-style animation of my real GitHub contribution calendar" width="1000">
+</picture>
+
+<sub>A separate animation of my GitHub contribution data, refreshed every 12 hours. It does not modify GitHub’s native contribution grid. [Static view](assets/contribution-arcade-static.svg) · [Static header](assets/digital-rain-static.svg)</sub>
