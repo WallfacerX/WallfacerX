@@ -129,7 +129,7 @@ def contribution_svg(days, animated=True):
             previous_month = date.month
         label = f'{d["date"]}: {d["contributionCount"]} contributions'
         p.append(f'<rect class="d{arrivals[d["date"]]}" x="{26+col*18}" y="{77+row*18}" width="12" height="12" rx="3" fill="{COLORS[d["level"]]}"><title>{label}</title></rect>')
-    p += ['<g class="player"><circle r="8" fill="#ad83ff" opacity=".25"/><circle r="6.8" fill="#63f4f4"/><path class="mouth" d="M0 0L9 -5L9 5Z" fill="#070b14"/><circle cx="-1" cy="-3.3" r="1" fill="#070b14"/></g>', f'<text x="26" y="221" font-size="11" fill="#8f9bb3">{days[0]["date"]} to {days[-1]["date"]} · GitHub contribution data · refreshed every 12 hours</text>', '</svg>']
+    p += ['<g class="player"><circle r="8" fill="#ad83ff" opacity=".25"/><circle r="6.8" fill="#9a6ae8"/><path class="mouth" d="M0 0L9 -5L9 5Z" fill="#070b14"/><circle cx="-1" cy="-3.3" r="1" fill="#070b14"/></g>', f'<text x="26" y="221" font-size="11" fill="#8f9bb3">{days[0]["date"]} to {days[-1]["date"]} · GitHub contribution data · refreshed every 12 hours</text>', '</svg>']
     return ''.join(p)
 
 
